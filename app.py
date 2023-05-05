@@ -13,13 +13,14 @@ app =Flask(__name__)
 # app.config['UPLOAD_FOLDER']=IMG_FOLDER
 
 
-@app.route('/')
+@app.route('/hi')
 def index():
     return "hello"
 
 @app.route('/',methods=['GET','POST'])
 def home():
-    return "Hello from home"
+    if request.method=='GET':
+        return "Hello from home"
 
 
 if __name__ == '__main__':
