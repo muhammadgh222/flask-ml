@@ -35,7 +35,10 @@ def api():
         if 'fileup' not in request.files:
             return "Please try again. The Image doesn't exist"
         image = request.files.get('fileup')
+        print('REQUEST FILES: ', request.files)
+        print('IMAGE BEFORE PROCESSING:',image)
         image_arr = preprossing(image)
+        print('IMAGE AFTER PROCESSING: ',image_arr)
         print("Model predicting ...")
         result = model.predict(image_arr)
         print("Model predicted", result)
@@ -43,7 +46,8 @@ def api():
         prediction = classes[ind]
         print(prediction)
         return jsonify({'prediction': prediction})
-    except Exception as e: print(e)
+    except:
+        return jsonify({'Error': 'Error occur'})
 
 
 
