@@ -4,6 +4,10 @@ from keras.layers import Dense
 from keras.models import Sequential, load_model
 from PIL import Image
 import numpy as np
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ["SM_FRAMEWORK"] = "tf.keras"
+
 
 app = Flask(__name__)
 

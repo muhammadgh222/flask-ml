@@ -5,3 +5,5 @@ pillow
 numpy
 protobuf==3.20.*
 keras
+segmentation-models
+tensorflow-estimator==2.1.
