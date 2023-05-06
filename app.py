@@ -20,7 +20,7 @@ def preprossing(image):
     return image_arr
 
 classes = ["Positive","Negative"]
-model=load_model("covid19.h5")
+model=load_model("covid19.h5",compile=False)
 
 @app.route('/')
 def index():
