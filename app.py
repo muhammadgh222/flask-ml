@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, url_for, jsonify
-from tensorflow import keras
-from keras.layers import Dense
-from keras.models import Sequential, load_model
+# import tensorflow
+from tensorflow.keras.models import load_model
+# from tensorflow import keras
+# from keras.models import Sequential, load_model
 from PIL import Image
 import numpy as np
 import os
