@@ -23,6 +23,12 @@ classes = ["Positive","Negative"]
 model=load_model("covid19.h5")
 
 
+@app.route('/')
+def index():
+
+    return "hello"
+
+
 @app.route('/predictApi', methods=["POST"])
 def api():
     # Get the image from post request
