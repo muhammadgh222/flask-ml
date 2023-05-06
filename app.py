@@ -1,40 +1,45 @@
-from flask import Flask,request,render_template,url_for, jsonify
+from flask import Flask, request, render_template, url_for, jsonify
+from tensorflow import keras
+from keras.layers import Dense
+from keras.models import Sequential, load_model
+from PIL import Image
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-import joblib as joblib
-import os
 
-model=joblib.load('iris_model_LR.pkl')
-scaler=joblib.load('scaler.save')
+app = Flask(__name__)
 
-app =Flask(__name__)
+def preprossing(image):
+    image=Image.open(image)
+    image = image.resize((150, 150))
+    image_arr = np.array(image.convert('RGB'))
+    image_arr.shape = (1, 150, 150, 3)
+    return image_arr
 
-IMG_FOLDER=os.path.join('static','IMG')
-app.config['UPLOAD_FOLDER']=IMG_FOLDER
+classes = ['Buildings' ,'Forest', 'Glacier' ,'Mountain' ,'Sea' ,'Street']
+model=load_model("Intel_Image_Classification.h5")
 
-
-@app.route('/hi')
+@app.route('/')
 def index():
+
     return "hello"
 
-@app.route('/',methods=['POST'])
-def home():
-    req_data=request.get_json()
-    raw_data = {
-        'sl':req_data['sl'],
-        'sw':req_data['sw'],
-        'pl':req_data['pl'],
-        'pw':req_data['pw'],
-    }
-    data = np.array([[raw_data['sl'], raw_data['sw'], raw_data['pl'], raw_data['pw']]])
-    x = scaler.transform(data)
-    print(x)
-    prediction = model.predict(x)
-    print(prediction)
-    image=prediction[0]+'.png'
-    image=os.path.join(app.config['UPLOAD_FOLDER'],image)
-    print(image)
-    return image
+
+@app.route('/predictApi', methods=["POST"])
+def api():
+    # Get the image from post request
+    try:
+        if 'fileup' not in request.files:
+            return "Please try again. The Image doesn't exist"
+        image = request.files.get('fileup')
+        image_arr = preprossing(image)
+        print("Model predicting ...")
+        result = model.predict(image_arr)
+        print("Model predicted", result)
+        ind = np.argmax(result)
+        prediction = classes[ind]
+        print(prediction)
+        return jsonify({'prediction': prediction})
+    except Exception as e: print(e)
+
 
 
 if __name__ == '__main__':
