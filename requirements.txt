@@ -1,8 +1,8 @@
 gunicorn
 flask
-tensorflow==2.3.0
+tensorflow
 pillow
 numpy
-protobuf==3.20.*
+protobuf
 segmentation-models
-tensorflow-estimator==2.1.
+tensorflow-estimator
