@@ -22,7 +22,6 @@ def preprossing(image):
 classes = ["Positive","Negative"]
 model=load_model("covid19.h5")
 
-
 @app.route('/')
 def index():
 
@@ -39,13 +38,12 @@ def api():
         image_arr = preprossing(image)
         print("Model predicting ...")
         result = model.predict(image_arr)
-        print("Model predicted",result)
+        print("Model predicted", result)
         ind = np.argmax(result)
         prediction = classes[ind]
         print(prediction)
         return jsonify({'prediction': prediction})
-    except:
-        return jsonify({'Error': 'Error occur'})
+    except Exception as e: print(e)
 
 
 
